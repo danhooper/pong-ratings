@@ -35,9 +35,15 @@ class RecordView(View):
         other_users_score = Score.objects.get(pk=score_id)
         form = Game(request.POST)
         if form.is_valid():
-            curr_users_score.score -= int(form.cleaned_data.get('self_score'))
+            self_score = int(form.cleaned_data.get('self_score'))
+            other_score = int(form.cleaned_data.get('other_score'))
+            if self_score > other_score:
+                curr_users_score.score += self_score
+                other_users_score.score -= other_score
+            else:
+                curr_users_score.score -= self_score
+                other_users_score.score += other_score
             curr_users_score.save()
-            other_users_score.score -= int(form.cleaned_data.get('other_score'))
             other_users_score.save()
 
         return redirect('handicap')
