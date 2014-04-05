@@ -1,11 +1,24 @@
 {% extends "theme_base.html" %}
-{% block account_bar %}{% endblock %}
-{% block extra_head_base %}
-<link rel="stylesheet" href="{{ STATIC_URL }}home_page/css/home_page.css">
-<script src="{{ STATIC_URL }}home_page/js/home_page.js"></script>
-<script src="{{ STATIC_URL }}js/website_health.js"></script>
-<script src="{{ STATIC_URL }}js/rss_reader.js"></script>
+{% load account_tags %}
+{% block navbar_brand %}
+<a class="navbar-brand" href="#">Pong Ratings</a>
 {% endblock %}
-{% block footer %}
-    {% include "_footer.html" %}
+{% block navbar_links %}
+<ul class="nav navbar-nav">
+    <li><a href="{% url 'handicap' %}">Handicap</a></li>
+</ul>
+{% endblock %}
+{% block navbar_right %}
+<ul class="nav navbar-nav navbar-right">
+    <li>
+        <p class="navbar-text navbar-right">
+        Welcome <a href="#" class="navbar-link">{{user}}</a>
+        </p>
+    </li>
+    <li><a href="{% url 'account_logout' %}">Logout</a></li>
+</ul>
+{% endblock %}
+{% block extra_head_base %}
+<link rel="stylesheet" href="{{ STATIC_URL }}pong_ratings/css/pong_ratings.css">
+<script src="{{ STATIC_URL }}pong_ratings/js/pong_ratings.js"></script>
 {% endblock %}

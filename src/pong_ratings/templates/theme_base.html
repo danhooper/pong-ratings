@@ -9,10 +9,10 @@
         <![endif]-->
         <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico" />
 
-        <link rel="stylesheet" href="{{ STATIC_URL }}home_page/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap//css/bootstrap.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="{{ STATIC_URL }}home_page/css/bootstrap-responsive.min.css">
+        <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.min.css">
         <script src="{{ STATIC_URL }}js/jquery-1.7.min.js"></script>
         <script src="{{ STATIC_URL }}js/jquery.form.js"></script>
         <script src="{{ STATIC_URL }}js/bootstrap-alerts.js"></script>
@@ -23,7 +23,6 @@
         <script src="{{ STATIC_URL }}js/bootstrap-scrollspy.js"></script>
         <script src="{{ STATIC_URL }}js/bootstrap-buttons.js"></script>
         <script src="{{ STATIC_URL }}js/theme.js"></script>
-        <script src="{{ STATIC_URL }}js/pinax.modal.js"></script>
         {% block extra_head_base %}
             {% block extra_head %}{% endblock %}
         {% endblock %}
@@ -31,17 +30,19 @@
     <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}">
 
         {% block topbar_base %}
-            <div class="topbar">
-                <div class="fill">
-                    <div class="container">
-                        {% block topbar %}
-                            <h3><a href="{% url "home" %}">{{ SITE_NAME }}</a></h3>
-                            {% block nav %}{% endblock %}
-                            {% block account_bar %}{% include "_account_bar.html" %}{% endblock %}
-                        {% endblock %}
-                    </div>
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    {% block navbar_brand %}{% endblock %}
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                {% block navbar_links %}
+                {% endblock %}
+                {% block navbar_right %}
+                {% endblock %}
                 </div>
             </div>
+        </nav>
         {% endblock %}
 
         {% block body_base %}

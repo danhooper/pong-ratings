@@ -70,6 +70,9 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
 # URL that handles the static files like app media.
 # Example: "http://media.lawrence.com"
 STATIC_URL = "/pong_ratings/static/"
+LOGIN_URL = "/pong_ratings/accounts/login"
+LOGOUT_URL = "/pong_ratings/accounts/logout"
+LOGIN_REDIRECT_URL = "/pong_ratings/"
 
 # Additional directories which hold static files
 STATICFILES_DIRS = [
@@ -79,7 +82,7 @@ STATICFILES_DIRS = [
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "django.contrib.staticfiles.finders.LegacyAppDirectoriesFinder",
+#    "django.contrib.staticfiles.finders.LegacyAppDirectoriesFinder",
     "compressor.finders.CompressorFinder",
 ]
 
@@ -107,6 +110,8 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "pinax.middleware.security.HideSensistiveFieldsMiddleware",
+    "account.middleware.LocaleMiddleware",
+    "account.middleware.TimezoneMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
@@ -123,9 +128,11 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.request",
+    "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages",
 
     "pinax.core.context_processors.pinax_settings",
+    "account.context_processors.account",
 ]
 
 INSTALLED_APPS = [
@@ -143,6 +150,7 @@ INSTALLED_APPS = [
 
     # theme
     "pinax_theme_bootstrap",
+    "bootstrapform",
 
     # external
     "compressor",
@@ -153,6 +161,7 @@ INSTALLED_APPS = [
     # Pinax
 
     # project
+    "score",
 ]
 
 FIXTURE_DIRS = [
