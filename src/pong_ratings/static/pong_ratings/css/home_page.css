@@ -1,0 +1,15 @@
+.feed, .website_health{
+    border:2px solid;
+    border-radius:7px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.title {
+    padding-left: 35px;
+}
+.feed-expand {
+    float: left;
+}
+.entry {
+    min-height: 40px;
+}
