@@ -1,16 +1,34 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.shortcuts import redirect
 from django.template import RequestContext
 from django.views.generic import View
-from models import Score
+import account.views
+from models import Rating
 from forms import Game
+
+
+class SignupView(account.views.SignupView):
+
+    def after_signup(self, form):
+        rating = Rating(user=self.created_user,
+                       score=500)
+        rating.save()
+        super(SignupView, self).after_signup(form)
 
 
 class HandicapView(View):
     def get(self, request):
-        scores = Score.objects.all()
-        curr_users_score = Score.objects.get(user = request.user)
+        scores = Rating.objects.all()
+        try:
+            curr_users_score = Rating.objects.get(user = request.user)
+        except ObjectDoesNotExist:
+            rating = Rating(user=request.user,
+                           score=500)
+            rating.save()
+            curr_users_score = rating
+
         [score.calculate_game(curr_users_score) for score in scores]
 
         return render_to_response(
@@ -21,7 +39,7 @@ class HandicapView(View):
 
 class RecordView(View):
     def get(self, request, score_id):
-        score = Score.objects.get(pk=score_id)
+        score = Rating.objects.get(pk=score_id)
         form = Game()
         return render_to_response(
             'record.html', {
@@ -31,8 +49,8 @@ class RecordView(View):
             context_instance=RequestContext(request))
 
     def post(self, request, score_id):
-        curr_users_score = Score.objects.get(user = request.user)
-        other_users_score = Score.objects.get(pk=score_id)
+        curr_users_score = Rating.objects.get(user = request.user)
+        other_users_score = Rating.objects.get(pk=score_id)
         form = Game(request.POST)
         if form.is_valid():
             self_score = int(form.cleaned_data.get('self_score'))

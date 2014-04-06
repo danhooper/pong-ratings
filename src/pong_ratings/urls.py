@@ -9,6 +9,7 @@ from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
+from pong_ratings.apps.score import views
 admin.autodiscover()
 
 
@@ -21,6 +22,8 @@ urlpatterns = patterns(
     url(r"^pong_ratings/$", login_required(TemplateView.as_view(template_name='homepage.html')),
                                     name="home"),
     url(r"^pong_ratings/admin/", include(admin.site.urls)),
+    url(r"^pong_ratings/accounts/signup/$", views.SignupView.as_view(),
+        name="account_signup"),
     url(r'^pong_ratings/accounts/', include('account.urls')),
     url(r'^pong_ratings/score/', include('apps.score.urls')),
 )

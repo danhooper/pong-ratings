@@ -4,20 +4,22 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <td>User</td><td>Score</td><td>Handicap</td><td>Actions</td>
+            <td>User</td><td>Rating</td><td>Handicap</td><td>Actions</td>
         </tr>
         <tbody>
             {% for score in scores %}
             <tr>
                 <td>{{score.user}}</td>
                 <td>{{score.score}}</td>
+                {% if curr_users_score.user != score.user %}
                 <td>{{curr_users_score.user}} {{score.handicap_self}}<br/>
                     {{score.user}} {{score.handicap_other}}</td>
                 <td>
-                    {% if curr_users_score.user != score.user %}
                     <a href="{% url "record" score.id %}"><button class="btn btn-primary btn-lg" >Record Score</button><a/>
-                    {% endif %}
                 </td>
+                {% else %}
+                <td/><td/>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

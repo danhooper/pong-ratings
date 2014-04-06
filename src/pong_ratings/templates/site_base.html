@@ -10,12 +10,14 @@
 {% endblock %}
 {% block navbar_right %}
 <ul class="nav navbar-nav navbar-right">
-    <li>
-        <p class="navbar-text navbar-right">
-        Welcome <a href="#" class="navbar-link">{{user}}</a>
-        </p>
-    </li>
-    <li><a href="{% url 'account_logout' %}">Logout</a></li>
+        {% if user.is_authenticated %}
+        <li>
+            <p class="navbar-text navbar-right">
+            Welcome <a href="#" class="navbar-link">{{user}}</a>
+            </p>
+        </li>
+        <li><a href="{% url 'account_logout' %}">Logout</a></li>
+        {% endif %}
 </ul>
 {% endblock %}
 {% block extra_head_base %}

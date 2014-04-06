@@ -49,7 +49,7 @@ TIME_ZONE = "US/Eastern"
 LANGUAGE_CODE = "en-us"
 
 SITE_ID = 1
-
+ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = False
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
@@ -169,7 +169,8 @@ FIXTURE_DIRS = [
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
-EMAIL_BACKEND = "mailer.backend.DbBackend"
+#EMAIL_BACKEND = "mailer.backend.DbBackend"
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 DEBUG_TOOLBAR_CONFIG = {
     "INTERCEPT_REDIRECTS": False,
