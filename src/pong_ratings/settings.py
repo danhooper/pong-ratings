@@ -49,6 +49,7 @@ TIME_ZONE = "US/Eastern"
 LANGUAGE_CODE = "en-us"
 
 SITE_ID = 1
+SITE_ROOT = 'pong_ratings'
 ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = False
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -113,6 +114,7 @@ MIDDLEWARE_CLASSES = [
     "account.middleware.LocaleMiddleware",
     "account.middleware.TimezoneMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "stronghold.middleware.LoginRequiredMiddleware",
 ]
 
 ROOT_URLCONF = "pong_ratings.urls"
@@ -157,6 +159,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "south",
     'account',
+    'stronghold',
 
     # Pinax
 
@@ -171,6 +174,14 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
 #EMAIL_BACKEND = "mailer.backend.DbBackend"
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+STRONGHOLD_PUBLIC_URLS = (
+    r'^%s/%s.+$' % (SITE_ROOT, STATIC_URL),
+    r'^%s/%s.+$' % (SITE_ROOT, MEDIA_URL),
+)
+STRONGHOLD_PUBLIC_NAMED_URLS = (
+    'account_login',
+    'account_signup',
+)
 
 DEBUG_TOOLBAR_CONFIG = {
     "INTERCEPT_REDIRECTS": False,

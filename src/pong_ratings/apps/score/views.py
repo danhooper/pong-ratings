@@ -6,7 +6,7 @@ from django.template import RequestContext
 from django.views.generic import View
 import account.views
 from models import Rating
-from forms import Game
+from forms import GameFormSet
 
 
 class SignupView(account.views.SignupView):
@@ -19,7 +19,7 @@ class SignupView(account.views.SignupView):
 
 
 class HandicapView(View):
-    def get(self, request):
+    def get(self, request, recorded=False):
         scores = Rating.objects.all()
         try:
             curr_users_score = Rating.objects.get(user = request.user)
@@ -30,20 +30,24 @@ class HandicapView(View):
             curr_users_score = rating
 
         [score.calculate_game(curr_users_score) for score in scores]
-
+        message = None
+        if recorded:
+            message = 'Score Recorded'
         return render_to_response(
             'handicap.html', {
                 'curr_users_score': curr_users_score,
-                'scores': scores},
+                'scores': scores,
+                'message': message},
             context_instance=RequestContext(request))
 
 class RecordView(View):
-    def get(self, request, score_id):
+    def get(self, request, score_id, formset = None):
         score = Rating.objects.get(pk=score_id)
-        form = Game()
+        if not formset:
+            formset = GameFormSet()
         return render_to_response(
             'record.html', {
-                'form': form,
+                'formset': formset,
                 'score': score,
             },
             context_instance=RequestContext(request))
@@ -51,17 +55,23 @@ class RecordView(View):
     def post(self, request, score_id):
         curr_users_score = Rating.objects.get(user = request.user)
         other_users_score = Rating.objects.get(pk=score_id)
-        form = Game(request.POST)
-        if form.is_valid():
-            self_score = int(form.cleaned_data.get('self_score'))
-            other_score = int(form.cleaned_data.get('other_score'))
-            if self_score > other_score:
-                curr_users_score.score += self_score
-                other_users_score.score -= other_score
-            else:
-                curr_users_score.score -= self_score
-                other_users_score.score += other_score
-            curr_users_score.save()
-            other_users_score.save()
-
-        return redirect('handicap')
+        formset = GameFormSet(request.POST)
+        if formset.is_valid():
+            for form in formset.cleaned_data:
+                try:
+                    self_score = int(form.get('self_score'))
+                    other_score = int(form.get('other_score'))
+                except TypeError:
+                    # the form must not have been filled in
+                    continue
+                if self_score > other_score:
+                    curr_users_score.score += self_score
+                    other_users_score.score -= other_score
+                else:
+                    curr_users_score.score -= self_score
+                    other_users_score.score += other_score
+                curr_users_score.save()
+                other_users_score.save()
+        else:
+            return self.get(request, score_id, formset)
+        return redirect('handicap_rec', recorded='recorded')

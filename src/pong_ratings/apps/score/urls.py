@@ -6,6 +6,7 @@ from views import RecordView
 
 urlpatterns = patterns("",
     url(r"^handicap/$", HandicapView.as_view(), name="handicap"),
+    url(r"^handicap/(?P<recorded>recorded)/$", HandicapView.as_view(), name="handicap_rec"),
     url(r"^record/(?P<score_id>\d)/$", RecordView.as_view(), name="record"),
 )
 
