@@ -83,6 +83,7 @@ class RecordView(View):
                 else:
                     self.loser = curr_users_scoreA
                     self.winner = other_users_score
+                self.calculate_score()
                 curr_users_score.save()
                 other_users_score.save()
         else:
