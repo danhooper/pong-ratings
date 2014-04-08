@@ -9,7 +9,7 @@ class Rating(models.Model):
         return '%s - %s' % (self.user, self.score)
 
     def calculate_game(self, score):
-        if self.score > score.score:
+        if self.score < score.score:
             handicap = int((self.score - score.score)/50)
             if handicap <= 10:
                 self.handicap_other = handicap
