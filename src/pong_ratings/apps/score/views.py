@@ -9,6 +9,8 @@ from models import Rating
 from forms import GameFormSet
 
 
+
+
 class SignupView(account.views.SignupView):
 
     def after_signup(self, form):
@@ -52,6 +54,17 @@ class RecordView(View):
             },
             context_instance=RequestContext(request))
 
+    def calculate_score(self):
+        score_diff = self.winner - self.loser
+        change = ((self.loser.score / 100) * score_diff +
+                  (1000 - self.winner.score)/100)
+        self.winner.score += change
+        if self.winner.score > 1000:
+            self.winner.score = 1000
+        self.loser.score -= change
+        if self.loser.score < 100:
+            self.loser.score = 100
+
     def post(self, request, score_id):
         curr_users_score = Rating.objects.get(user = request.user)
         other_users_score = Rating.objects.get(pk=score_id)
@@ -65,11 +78,11 @@ class RecordView(View):
                     # the form must not have been filled in
                     continue
                 if self_score > other_score:
-                    curr_users_score.score += self_score
-                    other_users_score.score -= other_score
+                    self.winner = curr_users_score
+                    self.loser = other_users_score
                 else:
-                    curr_users_score.score -= self_score
-                    other_users_score.score += other_score
+                    self.loser = curr_users_scoreA
+                    self.winner = other_users_score
                 curr_users_score.save()
                 other_users_score.save()
         else:
