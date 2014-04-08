@@ -55,7 +55,7 @@ class RecordView(View):
             context_instance=RequestContext(request))
 
     def calculate_score(self):
-        score_diff = self.winner - self.loser
+        score_diff = self.winner_score - self.loser_score
         change = ((self.loser.score / 100) * score_diff +
                   (1000 - self.winner.score)/100)
         self.winner.score += change
@@ -80,9 +80,13 @@ class RecordView(View):
                 if self_score > other_score:
                     self.winner = curr_users_score
                     self.loser = other_users_score
+                    self.winner_score = self_score
+                    self.loser_score = other_score
                 else:
-                    self.loser = curr_users_scoreA
+                    self.loser = curr_users_score
                     self.winner = other_users_score
+                    self.winner_score = other_score
+                    self.loser_score = self_score
                 self.calculate_score()
                 curr_users_score.save()
                 other_users_score.save()
