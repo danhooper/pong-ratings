@@ -25,6 +25,7 @@ python manage.py syncdb --noinput
 cd ~/git/pong-ratings/local
 sudo cp nginx/pong_ratings.conf /etc/nginx/conf.d/
 sudo cp supervisor/pong_ratings.conf /etc/supervisor/conf.d/
+sudo rm /etc/nginx/sites-enabled/default
 sudo service supervisor start
 sudo supervisorctl reread
 sudo supervisorctl update
