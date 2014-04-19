@@ -16,7 +16,7 @@ After provisioning is complete, the site should now be accessible on
 
 ### Deployment
 Refer to the [vagrant provision script](vagrant/pong_provision.sh) for
-installation steps.  The i
+installation steps.  The
 [local/supervisor/pong_ratings.conf](local/supervisor/pong_ratings.conf) and
 [local/nginx/pong_ratings.conf](local/nginx/pong_ratings.conf) files will need
 to be modified per your deployment directory.
