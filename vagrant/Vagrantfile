@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 $script = <<SCRIPT
-sudo apt-get -y install git python-pip sqlite3
+sudo apt-get -y install git python-pip sqlite3 nginx supervisor
 sudo pip install virtualenv
 mkdir -p ~/git
 cd ~/git
@@ -14,7 +14,11 @@ source ~/virtualenv/pong_ratings/bin/activate
 pip install -r ~/git/pong-ratings/src/pong_ratings/requirements/project.txt
 cd ~/git/pong-ratings/src/pong_ratings
 python manage.py syncdb --noinput
-python manage.py runserver 0.0.0.0:8000 &
+cd ~/git/pong-ratings/local
+sudo cp nginx/pong_ratings.conf /etc/nginx/conf.d/
+sudo cp supervisor/pong_rating.conf /etc/supervisor/conf.d/
+sudo service supervisor start
+sudo service nginx start
 SCRIPT
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!

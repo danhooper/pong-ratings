@@ -37,4 +37,4 @@ urlpatterns = patterns(
 
 if settings.SERVE_MEDIA:
     urlpatterns += static(settings.STATIC_URL,
-                          docuemnt_root=settings.STATIC_ROOT)
+                          document_root=settings.STATIC_ROOT)
